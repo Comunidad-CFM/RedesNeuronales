@@ -1,3 +1,6 @@
 class RedNeuronal:
     def __init__(self):
-        self.saludo = "Hola mundo!"
+        self.__saludo = "Hola mundo!"
+
+    def getSaludo(self):
+        return self.__saludo
