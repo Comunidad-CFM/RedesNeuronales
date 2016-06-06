@@ -1,4 +1,5 @@
 from PIL import Image
+import random
 
 class Imagen:
     def __init__(self, imagen):
@@ -16,34 +17,35 @@ class Imagen:
         return self.__nombreSalida
 
     def escalaGrises(self, imagen):
-        pic = imagen.load()
+        pixeles = imagen.load()
+        x, y = imagen.size
 
-        for i in range(imagen.size[0]):
-            for j in range(imagen.size[1]):
-                (R, G, B) = pic[i, j]
+        for i in range(x):
+            for j in range(y):
+                (R, G, B) = pixeles[i, j]
                 # Grayscale
                 intensity = int((R + G + B) / 3)
                 R = G = B = intensity
-                pic[i, j] = (R, G, B)
-        return pic
+                pixeles[i, j] = (R, G, B)
 
     def filtroUmbral(self, imagen):
+        imagen = self.getImagen()
         self.escalaGrises(imagen)
-        pic = imagen.load()
+        pixeles = imagen.load()
+        x, y = imagen.size
 
-        for i in range(imagen.size[0]):
-            for j in range(imagen.size[1]):
-                (R, G, B) = pic[i, j]
+        for i in range(x):
+            for j in range(y):
+                (R, G, B) = pixeles[i, j]
                 intensity = R
                 if intensity < 128:
                     intensity = 0
                 else:
                     intensity = 255
-                R = G = B = intensity
-                pic[i, j] = (R, G, B)
 
-        return pic
+                R = G = B = intensity
+                pixeles[i, j] = (R, G, B)
 
     def aplicarFiltro(self):
-        pic = self.filtroUmbral(self.getImagen())
+        self.filtroUmbral(self.getImagen())
         self.getImagen().save(self.getPath() + self.getNombreSalida())
