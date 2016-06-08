@@ -1,4 +1,4 @@
-import cv2
+import cv2, numpy
 from Crop import Crop
 
 class Crops():
@@ -10,7 +10,7 @@ class Crops():
         self.image, self.contours, self.hierarchy = cv2.findContours(self.thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         self.crops = []
         self.images = []
-
+        self.imagesBinary = []
 
     def sortCrops(self):
         length = len(self.crops)
@@ -52,15 +52,41 @@ class Crops():
             if (img.id > crop.id - 10) and (img.id < crop.id + 10):
                 return False
 
+        img.img = i = cv2.resize(img.img, (100, 200))
         self.crops.append(img)
         return True
 
-    def binarization(self):
-        for crop in self.crops:
-            print 'ID:',crop.id
-            print 'Len:',len(crop.img)
-            print '1:', crop.img[0]
+    def haveBlack(self, img):
+        for row in img:
+            for pixel in row:
+                if not numpy.all([pixel, [255,255,255]]):
+                    return 1
+        return 0
 
+    def prettyPrint(self):
+        i = 0
+        row = ''
+        for img in self.imagesBinary:
+            for i in range(0, len(img)):
+                if i % 10 == 0:
+                    print row
+                    row = ''
+                if img[i] == 1:
+                    row += '*'
+                else:
+                    row += ' '
+            print row
+            row = ''
+            print
+
+    def binarization(self):
+        list = []
+        for crop in self.crops:
+            for x in range(0, 200, 20):
+                for y in range(0, 100, 10):
+                    list.append(self.haveBlack(crop.img[x:x+20, y:y+10]))
+            self.imagesBinary.append(list)
+            list = []
 
     def filterCrops(self):
         self.cutImage()
@@ -76,11 +102,11 @@ class Crops():
 
         for i in self.images:
             if self.canInsert(i):
-                i = cv2.resize(i.img, (50, 100))
-                cv2.imwrite('./crops/' + str(j) + '.png', i)
+                cv2.imwrite('./crops/' + str(j) + '.png', i.img)
                 j += 1
 
         self.binarization()
+        self.prettyPrint()
 
         print "-----------------------"
         print x, y
