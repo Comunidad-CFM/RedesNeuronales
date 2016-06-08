@@ -5,7 +5,6 @@ class Crops():
     def __init__(self, imagen):
         self.im = cv2.imread(imagen)
         self.gray = cv2.cvtColor(self.im, cv2.COLOR_BGR2GRAY)
-        self.blur = cv2.GaussianBlur(self.gray, (5, 5), 0)
 
         self.thresh = cv2.adaptiveThreshold(self.gray, 255, 1, 1, 11, 2)
         self.image, self.contours, self.hierarchy = cv2.findContours(self.thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -32,8 +31,7 @@ class Crops():
                 [x, y, w, h] = cv2.boundingRect(cnt)
 
                 if h > 28:
-                    cv2.rectangle(self.im, (x, y), (x + w, y + h), (0, 0, 255), 2)
-                    roi = self.thresh[y:y + h, x:x + w]
+                    roi = self.im[y:y + h, x:x + w]
                     self.crops.append(Crop(roi, cnt[0][0][0]))
 
     def getAverage(self):
