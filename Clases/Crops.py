@@ -1,17 +1,31 @@
 import cv2, numpy
 from Crop import Crop
 
+'''
+    summary: Clase cuya funcionalidad es encargarse de recortar los digitos encontrados en una imagen
+                y darle el tratamiento necesario para pasar a la fase de analisis en la red neuronal
+    Properties:
+        im: imagen original
+        crops: lista de matrices que representan los recortes encontrados
+        images: lista con las matrices de las imagenes mas importantes
+        imagesBinary: lista con las matrices de imagenes final, en la que se encuentran los valores binarizados y redimensionados
+'''
 class Crops():
     def __init__(self, imagen):
+        # Leer y filtrar la imagen para recontar
         self.im = cv2.imread(imagen)
         self.gray = cv2.cvtColor(self.im, cv2.COLOR_BGR2GRAY)
 
         self.thresh = cv2.adaptiveThreshold(self.gray, 255, 1, 1, 11, 2)
         self.image, self.contours, self.hierarchy = cv2.findContours(self.thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        # fin de Leer y filtrar imagen para recortar
         self.crops = []
         self.images = []
         self.imagesBinary = []
 
+    '''
+        summary: Funcion para ordenar los recortes utilizando el meodo burbuja
+    '''
     def sortCrops(self):
         length = len(self.crops)
         temp = 0
@@ -25,6 +39,9 @@ class Crops():
 
             length -= 1
 
+    '''
+        summary: Funcion que recorre la imagen original y la recorta los digitos que encuentre
+    '''
     def cutImage(self):
         for cnt in self.contours:
             if cv2.contourArea(cnt) > 50:
@@ -34,6 +51,9 @@ class Crops():
                     roi = self.im[y:y + h, x:x + w]
                     self.crops.append(Crop(roi, cnt[0][0][0]))
 
+    '''
+        summary: obtener el promedio para los valores x,y de los recortes realizados en cutImage
+    '''
     def getAverage(self):
         x = 0
         y = 0
@@ -47,6 +67,9 @@ class Crops():
 
         return x, y
 
+    '''
+        summary: Filtrar los recortes que se encuentran dentro de los rangos de los promedios
+    '''
     def canInsert(self, img):
         for crop in self.crops:
             if (img.id > crop.id - 10) and (img.id < crop.id + 10):
@@ -56,6 +79,11 @@ class Crops():
         self.crops.append(img)
         return True
 
+    '''
+        summary: determinar si en un bloque de pixeles se encuentra un 1, si lo encuentra devuelve 1, sino 0
+            :param img, bloque de pixeles a analizar
+            :return 1 si hay 1 en algun sector del bloque 0 si no
+    '''
     def haveBlack(self, img):
         for row in img:
             for pixel in row:
@@ -63,6 +91,9 @@ class Crops():
                     return 1
         return 0
 
+    '''
+        summary: imprimir las matrices finales una vez terminado el proceso.
+    '''
     def prettyPrint(self):
         i = 0
         row = ''
@@ -80,6 +111,11 @@ class Crops():
             row = ''
             print
 
+    '''
+        summary: recorre las matrices y les aplica una redimension si en el grupo de pixeles seleccionado existe un
+                    1 o 0
+
+    '''
     def binarization(self):
         list = []
         for crop in self.crops:
@@ -89,6 +125,10 @@ class Crops():
             self.imagesBinary.append(list)
             list = []
 
+    '''
+        summary: filtra la lista de recortes para seleccionar unicamente los digitos que importan, que son los que se encuentran
+                    dentro del rango
+    '''
     def filterCrops(self):
         self.cutImage()
         self.sortCrops()
