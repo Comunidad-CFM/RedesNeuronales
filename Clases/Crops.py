@@ -67,6 +67,7 @@ class Crops():
         i = 0
         row = ''
         for img in self.imagesBinary:
+            print"imagen", img
             for i in range(0, len(img)):
                 if i % 10 == 0:
                     print row
@@ -108,6 +109,6 @@ class Crops():
         self.binarization()
         self.prettyPrint()
 
-        print "-----------------------"
-        print x, y
+        #print "-----------------------"
+        #print x, y
         #cv2.waitKey(0);
