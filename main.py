@@ -123,8 +123,8 @@ crops.filterCrops()
 
 
 entrenar(crops.imagesBinary)
-# evaluar(crops.imagesBinary)
-# resultados()
+evaluar(crops.imagesBinary)
+resultados()
 
 
 
