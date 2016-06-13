@@ -346,9 +346,9 @@ def main():
 
         op = raw_input("    Elegir una opcion: ")
 
-        if (op == '1'):
+        if op == '1':
             entrenar(matrizEntradas)
-        elif (op == '2'):
+        elif op == '2':
             try:
                 print ("")
                 imagen = raw_input("Escriba el nombre de la imagen que desea evaluar: ")
@@ -361,7 +361,7 @@ def main():
                 resultados()
             except:
                 print "Ha ocurrido un error al abrir la imagen: " + imagen
-        elif (op == '2'):
+        elif op == '3':
             print "Ha finalizado el programa"
             break
 
