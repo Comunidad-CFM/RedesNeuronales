@@ -58,21 +58,21 @@ class nn:
         if len(inputs) != self.ni-1:
             raise ValueError, 'numero erroneo de entradas'
 
-      #  print("activaciones entradas")
+        print("activaciones entradas")
         self.ai[0:self.ni-1]=inputs
-     #   print self.ai[0:self.ni-1]
+        print self.ai[0:self.ni - 1]
 
-      #  print("acticaciones capa oculta")
-      #  print("a1=f1(W1*p)")
+        print("acticaciones capa oculta")
+        print("a1=f1(W1*p)")
         self.n1 = dot(transpose(self.w1),self.ai)
-      #  print self.n1
+        print self.n1
         self.a1= self.sigmoid(self.n1)
-       # print self.a1
+        print self.a1
 
-      #  print(" activaciones salidas")
-       # print("a2=f2(W2* a1)")
+        print(" activaciones salidas")
+        print("a2=f2(W2* a1)")
         self.n2 = dot(transpose(self.w2),self.a1)
-       # print ("salida de la red")
+        print ("salida de la red")
         self.ao = self.sigmoid(self.n2)
 
         return self.ao
@@ -117,7 +117,7 @@ class nn:
         print("Imprime la entrada y su salida de la red neuronal")
         for p in range(size(entrada,axis=0)):
             inputAux = entrada[p, :]
-            evaluate = self.evaluar(entrada[p,:])
+            evaluate = self.evaluar(inputAux)
             if (metodo == 1):
                 self.resultadoEntrenamiento.append((inputAux, evaluate))
             else:
@@ -139,9 +139,9 @@ class nn:
                 print 'iteracion:   ' + str(iterations -i) + '  -   error ' + str(error)
                 itera += 1
 
-        print ("")
-        print ("numero de iteracion final")
-        print itera
+                # print ("")
+                # print ("numero de iteracion final")
+                # print itera
 
         # def getoutput(self, inputslen):
         #     output = []
