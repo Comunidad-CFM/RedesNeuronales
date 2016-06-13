@@ -24,7 +24,7 @@ class Crops():
         self.imagesBinary = []
 
     '''
-        summary: Funcion para ordenar los recortes utilizando el meodo burbuja
+        summary: Funcion para ordenar los recortes utilizando el metodo burbuja
     '''
     def sortCrops(self):
         length = len(self.crops)

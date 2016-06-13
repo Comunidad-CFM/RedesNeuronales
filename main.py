@@ -1,6 +1,7 @@
 from Clases.RedNeuronal import *
 from Clases.Imagen import Imagen
 from Clases.Crops import Crops
+from Clases.Similitud import *
 
 # pruebas = [
 #     [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -284,6 +285,12 @@ def entrenar(characters):
 
 
 def evaluar(characters):
+    s = 50
+    print "------------------ Similitud con un " + str(s) + "% de la matriz-----------------\n"
+    similitud = Similitud(matrizEntradas, valorPruebas, letraEntrada)
+    similitud.comparar(characters, s)
+    print "------------------ Fin Similitud  -----------------\n"
+
     prueba = nn(100, i, 1)
     prueba.cargar("Clases/entrenamiento.txt")
     entradasTest = array(characters)

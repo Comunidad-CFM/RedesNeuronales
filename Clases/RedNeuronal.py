@@ -114,7 +114,7 @@ class nn:
         return error
 
     def test(self, entrada, metodo):
-        print("Imprime la entrada y su salida de la red neuronal")
+        # print("Imprime la entrada y su salida de la red neuronal")
         for p in range(size(entrada,axis=0)):
             inputAux = entrada[p, :]
             evaluate = self.evaluar(inputAux)
@@ -122,7 +122,7 @@ class nn:
                 self.resultadoEntrenamiento.append((inputAux, evaluate))
             else:
                 self.resultadoEvaluacion.append((inputAux, evaluate))
-            print inputAux, '->', evaluate
+                #print inputAux, '->', evaluate
 
     def train(self, entrada, salida, iterations=50000, N=0.15):
         print("Realiza entrenamiento backpropagation")

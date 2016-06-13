@@ -2,10 +2,10 @@ import difflib
 
 
 class Similitud():
-    def __init__(self):
-        self.letras = []
-        self.valores = []
-        self.matrices = []
+    def __init__(self, m, v, l):
+        self.letras = l
+        self.valores = v
+        self.matrices = m
 
     def obtenerSimilitud(self, lista1, lista2):
 
@@ -14,15 +14,35 @@ class Similitud():
         sm = difflib.SequenceMatcher(None, lista1, lista2)
         return sm
 
-    def comparar(self, entradas, evaluaciones, porcentaje):
+    def comparar(self, evaluaciones, porcentaje):
         r = 0
+        i = 0
+        l = []
+        for y in range(len(evaluaciones)):
+            for x in range(len(self.matrices)):
 
-        for x in range(len(entradas)):
-
-            for y in range(len(evaluaciones)):
-
-                rAux = self.obtenerSimilitud(entradas[x][:porcentaje], evaluaciones[y][:porcentaje])
+                rAux = self.obtenerSimilitud(self.matrices[x][:porcentaje], evaluaciones[y][:porcentaje])
                 if rAux > r:
                     r = rAux
-                    l = entradas[x]
-            print r
+                    l = self.matrices[x]
+                    e = evaluaciones[y]
+                    i = x
+            print "Para la entrada"
+            self.prettyPrint(l)
+            print "Su mejor coincidencia es: " + self.letras[i][0] + " con un " + str(r.ratio() * 100) + "%"
+            print "-------------------------------------\n"
+
+    def prettyPrint(self, img):
+        i = 0
+        row = ''
+
+        for i in range(0, len(img)):
+            if i % 10 == 0:
+                print row
+                row = ''
+            if img[i] == 1:
+                row += '*'
+            else:
+                row += ' '
+        print row
+        row = ''
