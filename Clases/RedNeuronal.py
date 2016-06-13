@@ -109,7 +109,7 @@ class nn:
        # print self.w1
 
         #calcular error
-        error = sum(0.7* (targets-self.ao)**2)
+        error = sum(N * (targets - self.ao) ** 2)
 
         return error
 
@@ -124,12 +124,7 @@ class nn:
                 self.resultadoEvaluacion.append((inputAux, evaluate))
             print inputAux, '->', evaluate
 
-    def singletrain(self,inputs,targets):
-        #Realiza una iteracion del entrenamiento backpropagation
-        self.evaluar(inputs)
-        return self.backPropagate(targets,0.7)
-
-    def train(self, entrada, salida, iterations=50000, N=0.4):
+    def train(self, entrada, salida, iterations=50000, N=0.15):
         print("Realiza entrenamiento backpropagation")
         # N: factor de aprendizaje
         itera = 0
@@ -148,13 +143,13 @@ class nn:
         print ("numero de iteracion final")
         print itera
 
-    def getoutput(self, inputslen):
-        output = []
-        base = -0.1
-        for i in xrange(inputslen):
-            output.append([base])
-            base += 0.03
-        return output
+        # def getoutput(self, inputslen):
+        #     output = []
+        #     base = -0.1
+        #     for i in xrange(inputslen):
+        #         output.append([base])
+        #         base += 0.03
+        #     return output
 
 
 
